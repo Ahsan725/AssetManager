@@ -1,5 +1,8 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class Vehicle extends Asset {
     private String makeModel;
     private int year;
@@ -39,6 +42,31 @@ public class Vehicle extends Asset {
 
     @Override
     public double getValue() {
-        return 0;
+        LocalDate currentDate = LocalDate.now();
+        LocalDate acquisitionDate = LocalDate.parse(getDateAcquired());
+        int yearsSinceAcquisition = Period.between(acquisitionDate, currentDate).getYears();
+
+        double currentValue = this.originalCost;
+
+        if (yearsSinceAcquisition >= 0 && yearsSinceAcquisition <= 3) {
+            for (int i = 0; i < yearsSinceAcquisition; i++) {
+                currentValue *= 0.97;
+            }
+        } else if (yearsSinceAcquisition >= 4 && yearsSinceAcquisition <= 6) {
+            for (int i = 0; i < yearsSinceAcquisition; i++) {
+                currentValue *= 0.94;
+            }
+        } else if (yearsSinceAcquisition >= 7 && yearsSinceAcquisition <= 10) {
+            for (int i = 0; i < yearsSinceAcquisition; i++) {
+                currentValue *= 0.92;
+            }
+        }else{
+            currentValue -= 1000;
+        }
+
+        if (this.getOdometer() > 100000){
+            currentValue *= 0.75;
+        }
+        return currentValue;
     }
 }

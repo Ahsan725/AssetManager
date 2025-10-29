@@ -1,16 +1,25 @@
 package com.pluralsight;
 
 public class House extends Asset{
-
+    private String address;
     private int condition;
     private int squareFoot;
     private int lotSize;
 
-    public House(String description, String dateAcquired, double originalCost, int condition, int squareFoot, int lotSize) {
+    public House(String description, String dateAcquired, double originalCost, String address, int condition, int squareFoot, int lotSize) {
         super(description, dateAcquired, originalCost);
+        this.address = address;
         this.condition = condition;
         this.squareFoot = squareFoot;
         this.lotSize = lotSize;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public int getCondition() {
@@ -39,6 +48,14 @@ public class House extends Asset{
 
     @Override
     public double getValue() {
-        return 0;
+        double result = -1;
+        switch (condition) {
+            case 1 -> result = (180 * squareFoot) + (0.25 * lotSize);
+            case 2 -> result = (130 * squareFoot) + (0.25 * lotSize);
+            case 3 -> result = (90 * squareFoot) + (0.25 * lotSize);
+            case 4 -> result = (80 * squareFoot) + (0.25 * lotSize);
+            default -> System.out.println("Unknown value...returning -1");
+        };
+        return result;
     }
 }
